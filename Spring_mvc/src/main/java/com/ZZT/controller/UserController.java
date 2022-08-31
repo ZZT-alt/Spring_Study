@@ -50,7 +50,6 @@ public class UserController {
         System.out.println(addr);
     }
 
-
     @RequestMapping("/getData1")
     @ResponseBody
     public void get_data1(User user) {
