@@ -1,0 +1,68 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<beans xmlns="http://www.springframework.org/schema/beans"
+       xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+       xmlns:context="http://www.springframework.org/schema/context"
+       xsi:schemaLocation="http://www.springframework.org/schema/beans http://www.springframework.org/schema/beans/spring-beans.xsd
+                            http://www.springframework.org/schema/context  http://www.springframework.org/schema/context/spring-context.xsd">
+<!--    加载外部的properties文件-->
+    <context:property-placeholder location="classpath:mysql.properties"/>
+
+    <!--    <bean id="UserDao" class="com.ZZT.Dao.Impl.UserDaoImpl" scope="singleton" init-method="Init" destroy-method="Delete"></bean>-->
+
+
+    <!--    <bean id="UserDao" class="com.ZZT.factory.StaticFactory" factory-method="getUserDao"></bean>-->
+
+
+    <!--    <bean id="factory" class="com.ZZT.factory.DynamicFactory"></bean>-->
+    <!--    <bean id="UserDao" factory-bean="factory" factory-method="getUserDao"></bean>-->
+
+    <bean id="u1" class="com.ZZT.Domain.User">
+        <property name="name" value="ZZT"/>
+        <property name="address" value="广东省"/>
+    </bean>
+    <bean id="u2" class="com.ZZT.Domain.User">
+        <property name="name" value="小郑"/>
+        <property name="address" value="广东省"/>
+    </bean>
+    <bean id="userDao" class="com.ZZT.Dao.Impl.UserDaoImpl">
+        <property name="age" value="18"/>
+        <property name="name" value="ZZT"/>
+        <property name="stringList">
+            <list>
+                <value>Z</value>
+                <value>Z</value>
+                <value>T</value>
+            </list>
+        </property>
+        <property name="useMap">
+            <map>
+                <entry key="1" value-ref="u1"/>
+                <entry key="2" value-ref="u2"/>
+            </map>
+        </property>
+        <property name="properties">
+            <props>
+                <prop key="p1">ppp1</prop>
+                <prop key="p2">ppp2</prop>
+                <prop key="p3">ppp3</prop>
+            </props>
+        </property>
+    </bean>
+
+
+    <bean id="userService" class="com.ZZT.service.Impl.UserServiceImpl">
+<!--        <constructor-arg name="userDao" ref="UserDao"/>-->
+        <property name="userDao" ref="userDao"/>
+    </bean>
+
+    <bean id="dataSource" class="com.mchange.v2.c3p0.ComboPooledDataSource">
+        <property name="driverClass" value="${driver}"/>
+        <property name="jdbcUrl"
+                  value="${url}"/>
+        <property name="user" value="${user}"/>
+        <property name="password" value="${password}"/>
+    </bean>
+
+<!--    使用注解扫描-->
+    <context:component-scan base-package="com.ZZT"/>
+</beans>
